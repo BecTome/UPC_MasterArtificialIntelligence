@@ -1,0 +1,2 @@
+https://github.com/yarox/pddl-examples
+Challenges: https://github.com/potassco/pddl-instances
