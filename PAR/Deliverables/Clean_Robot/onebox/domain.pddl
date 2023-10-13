@@ -1,6 +1,6 @@
 ;Header and description
 
-(define (domain clean-robot)
+(define (domain clean-robot-onebox)
 
 ;remove requirements that are not needed
 (:requirements :strips :equality)
