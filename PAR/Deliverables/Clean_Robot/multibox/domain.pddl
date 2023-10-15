@@ -27,10 +27,10 @@
     :effect (and (not (at ?o1)) (at ?o2))
 )
 
-(:action push-move
+(:action push
     :parameters (?o1 ?o2)
     :precondition (and (not (box-at ?o2)) (box-at ?o1) (adj ?o1 ?o2) (at ?o1))
-    :effect (and (box-at ?o2) (not (box-at ?o1)) (at ?o2) (not (at ?o1)))
+    :effect (and (box-at ?o2) (not (box-at ?o1)))
 )
 
 
