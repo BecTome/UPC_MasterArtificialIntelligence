@@ -3,7 +3,7 @@
 (define (domain clean-robot)
 
 ;remove requirements that are not needed
-(:requirements :strips :equality)
+(:requirements :strips :negative-preconditions)
 
 ; un-comment following line if constants are needed
 ;(:constants )
@@ -29,8 +29,10 @@
 
 (:action push
     :parameters (?o1 ?o2)
-    :precondition (and (not (box-at ?o2)) (box-at ?o1) (adj ?o1 ?o2) (at ?o1))
-    :effect (and (box-at ?o2) (not (box-at ?o1)))
+    :precondition (and (not (box-at ?o2)) (box-at ?o1) 
+                       (adj ?o1 ?o2) (at ?o1))
+    :effect (and (box-at ?o2) (not (box-at ?o1)) 
+                 (at ?o2) (not (at ?o1)))
 )
 
 

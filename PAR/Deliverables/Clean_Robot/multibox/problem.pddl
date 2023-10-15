@@ -31,7 +31,9 @@
 
  (dirty o3)
  (dirty o4)
+
  (at o1)
+
  (box-at o1)
  (box-at o6)
  (box-at o9)
@@ -39,8 +41,10 @@
 
 (:goal (and
     (at o4)
+
     (not (dirty o3))
     (not (dirty o4))
+    
     (box-at o2)
     (box-at o3)
     (box-at o7)
