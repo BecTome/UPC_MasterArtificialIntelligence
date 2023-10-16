@@ -1,0 +1,185 @@
+Planning service: http://solver.planning.domains/solve
+Domain: clean-robot, Problem: NBOX7
+ --- OK.
+ Match tree built with 194 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX7
+	#Actions: 194
+	#Fluents: 85
+Landmarks found: 10
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 19
+#RP_fluents 31
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{10/10/0}:IW(1) -> [2][3]rel_plan size: 19
+#RP_fluents 30
+{10/9/1}:IW(1) -> [2][3]rel_plan size: 18
+#RP_fluents 29
+{10/8/2}:IW(1) -> [2][3]rel_plan size: 17
+#RP_fluents 28
+{10/7/3}:IW(1) -> [2][3][4]rel_plan size: 15
+#RP_fluents 23
+{10/6/4}:IW(1) -> [2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21][22][23][24];; NOT I-REACHABLE ;;
+Total time: 0.000716
+Nodes generated during search: 232
+Nodes expanded during search: 204
+IW search completed
+Starting search with BFS(novel,land,h_add)...
+--[4294967295 / 54]--
+--[6 / 54]--
+--[6 / 46]--
+--[6 / 40]--
+--[6 / 38]--
+--[6 / 35]--
+--[5 / 35]--
+--[5 / 34]--
+--[4 / 34]--
+--[4 / 32]--
+--[4 / 30]--
+--[4 / 27]--
+--[4 / 24]--
+--[4 / 22]--
+--[4 / 21]--
+--[4 / 19]--
+--[4 / 18]--
+--[4 / 16]--
+--[3 / 16]--
+--[3 / 14]--
+--[3 / 13]--
+--[3 / 12]--
+--[2 / 12]--
+--[2 / 11]--
+--[2 / 8]--
+--[2 / 7]--
+--[1 / 7]--
+--[1 / 5]--
+--[1 / 4]--
+--[1 / 2]--
+--[1 / 1]--
+--[1 / 0]--
+--[0 / 0]--
+Total time: 0.092103
+Nodes generated during search: 5724
+Nodes expanded during search: 1572
+Plan found with cost: 41
+BFS search completed
+
+ --- OK.
+ Match tree built with 194 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX7
+	#Actions: 194
+	#Fluents: 85
+Landmarks found: 10
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 19
+#RP_fluents 31
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{10/10/0}:IW(1) -> [2][3]rel_plan size: 19
+#RP_fluents 30
+{10/9/1}:IW(1) -> [2][3]rel_plan size: 18
+#RP_fluents 29
+{10/8/2}:IW(1) -> [2][3]rel_plan size: 17
+#RP_fluents 28
+{10/7/3}:IW(1) -> [2][3][4]rel_plan size: 15
+#RP_fluents 23
+{10/6/4}:IW(1) -> [2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21][22][23][24];; NOT I-REACHABLE ;;
+Total time: 0.000716
+Nodes generated during search: 232
+Nodes expanded during search: 204
+IW search completed
+Starting search with BFS(novel,land,h_add)...
+--[4294967295 / 54]--
+--[6 / 54]--
+--[6 / 46]--
+--[6 / 40]--
+--[6 / 38]--
+--[6 / 35]--
+--[5 / 35]--
+--[5 / 34]--
+--[4 / 34]--
+--[4 / 32]--
+--[4 / 30]--
+--[4 / 27]--
+--[4 / 24]--
+--[4 / 22]--
+--[4 / 21]--
+--[4 / 19]--
+--[4 / 18]--
+--[4 / 16]--
+--[3 / 16]--
+--[3 / 14]--
+--[3 / 13]--
+--[3 / 12]--
+--[2 / 12]--
+--[2 / 11]--
+--[2 / 8]--
+--[2 / 7]--
+--[1 / 7]--
+--[1 / 5]--
+--[1 / 4]--
+--[1 / 2]--
+--[1 / 1]--
+--[1 / 0]--
+--[0 / 0]--
+Total time: 0.092103
+Nodes generated during search: 5724
+Nodes expanded during search: 1572
+Plan found with cost: 41
+BFS search completed
+
+
+Plan found:
+0.00100: (move o7 o4)
+0.00200: (clean o4)
+0.00300: (move o4 o5)
+0.00400: (move o5 o6)
+0.00500: (move o6 o3)
+0.00600: (clean o3)
+0.00700: (push e o3 o2)
+0.00800: (move o2 o5)
+0.00900: (move o5 o6)
+0.01000: (push b o6 o3)
+0.01100: (move o3 o2)
+0.01200: (move o2 o5)
+0.01300: (move o5 o4)
+0.01400: (move o4 o7)
+0.01500: (push d o7 o8)
+0.01600: (move o8 o9)
+0.01700: (push c o9 o6)
+0.01800: (move o6 o5)
+0.01900: (move o5 o4)
+0.02000: (push f o4 o7)
+0.02100: (move o7 o8)
+0.02200: (push d o8 o9)
+0.02300: (move o9 o6)
+0.02400: (move o6 o5)
+0.02500: (push g o5 o4)
+0.02600: (move o4 o5)
+0.02700: (move o5 o6)
+0.02800: (push c o6 o5)
+0.02900: (push c o5 o8)
+0.03000: (move o8 o5)
+0.03100: (move o5 o4)
+0.03200: (push g o4 o5)
+0.03300: (push g o5 o6)
+0.03400: (move o6 o5)
+0.03500: (move o5 o2)
+0.03600: (push e o2 o5)
+0.03700: (move o5 o4)
+0.03800: (move o4 o1)
+0.03900: (push a o1 o2)
+0.04000: (move o2 o5)
+0.04100: (move o5 o4)
+Metric: 0.041
+Makespan: 0.041
+States evaluated: undefined
+Planner found 1 plan(s) in 0.563secs.

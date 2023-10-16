@@ -1,0 +1,71 @@
+Planning service: http://solver.planning.domains/solve
+Domain: clean-robot, Problem: NBOX0
+
+warning: parameter ?B of op PUSH has unknown or empty type BOX. skipping op --- OK.
+ Match tree built with 26 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX0
+	#Actions: 26
+	#Fluents: 13
+Landmarks found: 3
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 6
+#RP_fluents 6
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{3/3/0}:IW(1) -> [2][3]rel_plan size: 4
+#RP_fluents 4
+{3/2/1}:IW(1) -> [2][3][4][5]rel_plan size: 3
+#RP_fluents 3
+{3/1/2}:IW(1) -> [2][3][4]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 9
+Total time: 0.000102
+Nodes generated during search: 40
+Nodes expanded during search: 18
+IW search completed
+
+
+warning: parameter ?B of op PUSH has unknown or empty type BOX. skipping op --- OK.
+ Match tree built with 26 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX0
+	#Actions: 26
+	#Fluents: 13
+Landmarks found: 3
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 6
+#RP_fluents 6
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{3/3/0}:IW(1) -> [2][3]rel_plan size: 4
+#RP_fluents 4
+{3/2/1}:IW(1) -> [2][3][4][5]rel_plan size: 3
+#RP_fluents 3
+{3/1/2}:IW(1) -> [2][3][4]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 9
+Total time: 0.000102
+Nodes generated during search: 40
+Nodes expanded during search: 18
+IW search completed
+
+
+Plan found:
+0.00100: (move o7 o4)
+0.00200: (clean o4)
+0.00300: (move o4 o1)
+0.00400: (move o1 o2)
+0.00500: (move o2 o3)
+0.00600: (clean o3)
+0.00700: (move o3 o2)
+0.00800: (move o2 o1)
+0.00900: (move o1 o4)
+Metric: 0.009000000000000001
+Makespan: 0.009000000000000001
+States evaluated: undefined
+Planner found 1 plan(s) in 0.366secs.

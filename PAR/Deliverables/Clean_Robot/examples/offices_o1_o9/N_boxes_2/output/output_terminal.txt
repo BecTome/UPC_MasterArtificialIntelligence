@@ -1,0 +1,79 @@
+Planning service: http://solver.planning.domains/solve
+Domain: clean-robot, Problem: NBOX2
+ --- OK.
+ Match tree built with 74 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX2
+	#Actions: 74
+	#Fluents: 40
+Landmarks found: 5
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 8
+#RP_fluents 12
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{5/5/0}:IW(1) -> [2][3]rel_plan size: 6
+#RP_fluents 10
+{5/4/1}:IW(1) -> [2][3]rel_plan size: 6
+#RP_fluents 10
+{5/3/2}:IW(1) -> [2][3]rel_plan size: 5
+#RP_fluents 9
+{5/2/3}:IW(1) -> [2][3]rel_plan size: 3
+#RP_fluents 5
+{5/1/4}:IW(1) -> [2][3][4]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 463768
+Total time: 0.000185
+Nodes generated during search: 54
+Nodes expanded during search: 16
+IW search completed
+
+ --- OK.
+ Match tree built with 74 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX2
+	#Actions: 74
+	#Fluents: 40
+Landmarks found: 5
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 8
+#RP_fluents 12
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{5/5/0}:IW(1) -> [2][3]rel_plan size: 6
+#RP_fluents 10
+{5/4/1}:IW(1) -> [2][3]rel_plan size: 6
+#RP_fluents 10
+{5/3/2}:IW(1) -> [2][3]rel_plan size: 5
+#RP_fluents 9
+{5/2/3}:IW(1) -> [2][3]rel_plan size: 3
+#RP_fluents 5
+{5/1/4}:IW(1) -> [2][3][4]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 463768
+Total time: 0.000185
+Nodes generated during search: 54
+Nodes expanded during search: 16
+IW search completed
+
+
+Plan found:
+0.00100: (move o7 o4)
+0.00200: (clean o4)
+0.00300: (move o4 o1)
+0.00400: (push a o1 o2)
+0.00500: (move o2 o3)
+0.00600: (clean o3)
+0.00700: (move o3 o6)
+0.00800: (push b o6 o3)
+0.00900: (move o3 o2)
+0.01000: (move o2 o1)
+0.01100: (move o1 o4)
+Metric: 0.011
+Makespan: 0.011
+States evaluated: undefined
+Planner found 1 plan(s) in 0.412secs.

@@ -1,0 +1,281 @@
+Planning service: http://solver.planning.domains/solve
+Domain: clean-robot, Problem: NBOX8
+ --- OK.
+ Match tree built with 218 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX8
+	#Actions: 218
+	#Fluents: 94
+Landmarks found: 11
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 23
+#RP_fluents 34
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{11/11/0}:IW(1) -> [2][3]rel_plan size: 23
+#RP_fluents 34
+{11/10/1}:IW(1) -> [2][3][4][5]rel_plan size: 20
+#RP_fluents 31
+{11/9/2}:IW(1) -> [2][3][4]rel_plan size: 20
+#RP_fluents 30
+{11/8/3}:IW(1) -> [2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21][22][23][24][25][26];; NOT I-REACHABLE ;;
+Total time: 0.000652
+Nodes generated during search: 228
+Nodes expanded during search: 200
+IW search completed
+Starting search with BFS(novel,land,h_add)...
+--[4294967295 / 85]--
+--[8 / 85]--
+--[8 / 69]--
+--[8 / 57]--
+--[8 / 55]--
+--[8 / 53]--
+--[7 / 53]--
+--[7 / 49]--
+--[6 / 49]--
+--[6 / 47]--
+--[6 / 46]--
+--[6 / 45]--
+--[6 / 44]--
+--[6 / 42]--
+--[5 / 42]--
+--[5 / 41]--
+--[5 / 34]--
+--[4 / 34]--
+--[3 / 34]--
+--[3 / 31]--
+--[3 / 30]--
+--[3 / 27]--
+--[3 / 23]--
+--[3 / 22]--
+--[3 / 17]--
+--[2 / 17]--
+--[2 / 12]--
+--[2 / 11]--
+--[2 / 9]--
+--[2 / 5]--
+--[2 / 3]--
+--[2 / 1]--
+--[1 / 1]--
+--[1 / 0]--
+--[0 / 0]--
+Total time: 0.764975
+Nodes generated during search: 38596
+Nodes expanded during search: 11900
+Plan found with cost: 137
+BFS search completed
+
+ --- OK.
+ Match tree built with 218 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NBOX8
+	#Actions: 218
+	#Fluents: 94
+Landmarks found: 11
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 23
+#RP_fluents 34
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{11/11/0}:IW(1) -> [2][3]rel_plan size: 23
+#RP_fluents 34
+{11/10/1}:IW(1) -> [2][3][4][5]rel_plan size: 20
+#RP_fluents 31
+{11/9/2}:IW(1) -> [2][3][4]rel_plan size: 20
+#RP_fluents 30
+{11/8/3}:IW(1) -> [2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21][22][23][24][25][26];; NOT I-REACHABLE ;;
+Total time: 0.000652
+Nodes generated during search: 228
+Nodes expanded during search: 200
+IW search completed
+Starting search with BFS(novel,land,h_add)...
+--[4294967295 / 85]--
+--[8 / 85]--
+--[8 / 69]--
+--[8 / 57]--
+--[8 / 55]--
+--[8 / 53]--
+--[7 / 53]--
+--[7 / 49]--
+--[6 / 49]--
+--[6 / 47]--
+--[6 / 46]--
+--[6 / 45]--
+--[6 / 44]--
+--[6 / 42]--
+--[5 / 42]--
+--[5 / 41]--
+--[5 / 34]--
+--[4 / 34]--
+--[3 / 34]--
+--[3 / 31]--
+--[3 / 30]--
+--[3 / 27]--
+--[3 / 23]--
+--[3 / 22]--
+--[3 / 17]--
+--[2 / 17]--
+--[2 / 12]--
+--[2 / 11]--
+--[2 / 9]--
+--[2 / 5]--
+--[2 / 3]--
+--[2 / 1]--
+--[1 / 1]--
+--[1 / 0]--
+--[0 / 0]--
+Total time: 0.764975
+Nodes generated during search: 38596
+Nodes expanded during search: 11900
+Plan found with cost: 137
+BFS search completed
+
+
+Plan found:
+0.00100: (move o7 o4)
+0.00200: (clean o4)
+0.00300: (move o4 o7)
+0.00400: (push d o7 o8)
+0.00500: (move o8 o5)
+0.00600: (move o5 o4)
+0.00700: (push f o4 o7)
+0.00800: (move o7 o4)
+0.00900: (move o4 o5)
+0.01000: (push g o5 o4)
+0.01100: (move o4 o5)
+0.01200: (move o5 o2)
+0.01300: (move o2 o3)
+0.01400: (clean o3)
+0.01500: (move o3 o2)
+0.01600: (push h o2 o5)
+0.01700: (move o5 o6)
+0.01800: (move o6 o3)
+0.01900: (push e o3 o2)
+0.02000: (move o2 o5)
+0.02100: (move o5 o6)
+0.02200: (push b o6 o3)
+0.02300: (move o3 o6)
+0.02400: (move o6 o9)
+0.02500: (push c o9 o6)
+0.02600: (move o6 o5)
+0.02700: (move o5 o8)
+0.02800: (push d o8 o9)
+0.02900: (move o9 o8)
+0.03000: (move o8 o7)
+0.03100: (push f o7 o8)
+0.03200: (move o8 o5)
+0.03300: (move o5 o4)
+0.03400: (push g o4 o7)
+0.03500: (move o7 o4)
+0.03600: (move o4 o5)
+0.03700: (push h o5 o4)
+0.03800: (move o4 o5)
+0.03900: (move o5 o2)
+0.04000: (push e o2 o5)
+0.04100: (move o5 o4)
+0.04200: (move o4 o1)
+0.04300: (push a o1 o2)
+0.04400: (move o2 o5)
+0.04500: (move o5 o4)
+0.04600: (push h o4 o1)
+0.04700: (move o1 o4)
+0.04800: (move o4 o5)
+0.04900: (push e o5 o4)
+0.05000: (move o4 o5)
+0.05100: (move o5 o6)
+0.05200: (push c o6 o5)
+0.05300: (move o5 o8)
+0.05400: (move o8 o9)
+0.05500: (push d o9 o6)
+0.05600: (move o6 o5)
+0.05700: (move o5 o8)
+0.05800: (push f o8 o9)
+0.05900: (move o9 o8)
+0.06000: (move o8 o5)
+0.06100: (push c o5 o8)
+0.06200: (move o8 o5)
+0.06300: (move o5 o4)
+0.06400: (push e o4 o5)
+0.06500: (move o5 o4)
+0.06600: (move o4 o7)
+0.06700: (push g o7 o4)
+0.06800: (move o4 o5)
+0.06900: (move o5 o8)
+0.07000: (push c o8 o7)
+0.07100: (move o7 o8)
+0.07200: (move o8 o9)
+0.07300: (push f o9 o8)
+0.07400: (move o8 o5)
+0.07500: (move o5 o6)
+0.07600: (push d o6 o9)
+0.07700: (move o9 o8)
+0.07800: (move o8 o5)
+0.07900: (push e o5 o6)
+0.08000: (move o6 o5)
+0.08100: (move o5 o4)
+0.08200: (push g o4 o5)
+0.08300: (move o5 o8)
+0.08400: (move o8 o7)
+0.08500: (push c o7 o4)
+0.08600: (move o4 o5)
+0.08700: (move o5 o8)
+0.08800: (push f o8 o7)
+0.08900: (move o7 o4)
+0.09000: (move o4 o5)
+0.09100: (push g o5 o8)
+0.09200: (move o8 o5)
+0.09300: (move o5 o4)
+0.09400: (push c o4 o5)
+0.09500: (move o5 o8)
+0.09600: (move o8 o7)
+0.09700: (push f o7 o4)
+0.09800: (move o4 o5)
+0.09900: (move o5 o8)
+0.10000: (push g o8 o7)
+0.10100: (move o7 o4)
+0.10200: (move o4 o5)
+0.10300: (push c o5 o8)
+0.10400: (move o8 o5)
+0.10500: (move o5 o6)
+0.10600: (push e o6 o5)
+0.10700: (move o5 o8)
+0.10800: (move o8 o9)
+0.10900: (push d o9 o6)
+0.11000: (move o6 o5)
+0.11100: (move o5 o8)
+0.11200: (push c o8 o9)
+0.11300: (move o9 o8)
+0.11400: (move o8 o7)
+0.11500: (push g o7 o8)
+0.11600: (move o8 o5)
+0.11700: (move o5 o4)
+0.11800: (push f o4 o7)
+0.11900: (move o7 o4)
+0.12000: (move o4 o5)
+0.12100: (push e o5 o4)
+0.12200: (move o4 o5)
+0.12300: (move o5 o8)
+0.12400: (push g o8 o5)
+0.12500: (move o5 o6)
+0.12600: (move o6 o9)
+0.12700: (push c o9 o8)
+0.12800: (move o8 o5)
+0.12900: (move o5 o6)
+0.13000: (push d o6 o9)
+0.13100: (move o9 o8)
+0.13200: (move o8 o5)
+0.13300: (push g o5 o6)
+0.13400: (move o6 o5)
+0.13500: (move o5 o4)
+0.13600: (push e o4 o5)
+0.13700: (move o5 o4)
+Metric: 0.137
+Makespan: 0.137
+States evaluated: undefined
+Planner found 1 plan(s) in 1.459secs.
