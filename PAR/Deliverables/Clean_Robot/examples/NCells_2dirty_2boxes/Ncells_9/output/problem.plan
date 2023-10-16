@@ -1,0 +1,16 @@
+;;!domain: clean-robot
+;;!problem: NBOX2
+
+0.00100: (move o7 o4)
+0.00200: (move o4 o1)
+0.00300: (push a o1 o2)
+0.00400: (move o2 o3)
+0.00500: (clean o3)
+0.00600: (move o3 o6)
+0.00700: (move o6 o9)
+0.00800: (push b o9 o8)
+0.00900: (push b o8 o7)
+0.01000: (move o7 o4)
+
+; Makespan: 0.01
+; Metric: 0.01

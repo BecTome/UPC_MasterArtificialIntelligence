@@ -1,0 +1,92 @@
+Planning service: http://solver.planning.domains/solve
+Domain: clean-robot, Problem: NCELL16
+ --- OK.
+ Match tree built with 116 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NCELL16
+	#Actions: 116
+	#Fluents: 68
+Landmarks found: 5
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 13
+#RP_fluents 17
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{5/5/0}:IW(1) -> [2][3]rel_plan size: 13
+#RP_fluents 18
+{5/4/1}:IW(1) -> [2][3][4]rel_plan size: 13
+#RP_fluents 19
+{5/3/2}:IW(1) -> [2][3]rel_plan size: 12
+#RP_fluents 17
+{5/2/3}:IW(1) -> [2][3][4][5][6][7][8][9][10][11]rel_plan size: 7
+#RP_fluents 11
+{5/1/4}:IW(1) -> [2][3][4][5][6][7][8]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 24
+Total time: 0.000836
+Nodes generated during search: 358
+Nodes expanded during search: 261
+IW search completed
+
+ --- OK.
+ Match tree built with 116 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: NCELL16
+	#Actions: 116
+	#Fluents: 68
+Landmarks found: 5
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 13
+#RP_fluents 17
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{5/5/0}:IW(1) -> [2][3]rel_plan size: 13
+#RP_fluents 18
+{5/4/1}:IW(1) -> [2][3][4]rel_plan size: 13
+#RP_fluents 19
+{5/3/2}:IW(1) -> [2][3]rel_plan size: 12
+#RP_fluents 17
+{5/2/3}:IW(1) -> [2][3][4][5][6][7][8][9][10][11]rel_plan size: 7
+#RP_fluents 11
+{5/1/4}:IW(1) -> [2][3][4][5][6][7][8]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 24
+Total time: 0.000836
+Nodes generated during search: 358
+Nodes expanded during search: 261
+IW search completed
+
+
+Plan found:
+0.00100: (move o13 o9)
+0.00200: (clean o9)
+0.00300: (move o9 o5)
+0.00400: (move o5 o1)
+0.00500: (push a o1 o2)
+0.00600: (move o2 o3)
+0.00700: (clean o3)
+0.00800: (move o3 o2)
+0.00900: (move o2 o1)
+0.01000: (move o1 o5)
+0.01100: (move o5 o9)
+0.01200: (move o9 o10)
+0.01300: (move o10 o11)
+0.01400: (move o11 o12)
+0.01500: (move o12 o16)
+0.01600: (push b o16 o15)
+0.01700: (push b o15 o14)
+0.01800: (move o14 o13)
+0.01900: (move o13 o9)
+0.02000: (move o9 o5)
+0.02100: (move o5 o1)
+0.02200: (move o1 o2)
+0.02300: (move o2 o3)
+0.02400: (move o3 o4)
+Metric: 0.024
+Makespan: 0.024
+States evaluated: undefined
+Planner found 1 plan(s) in 0.403secs.
