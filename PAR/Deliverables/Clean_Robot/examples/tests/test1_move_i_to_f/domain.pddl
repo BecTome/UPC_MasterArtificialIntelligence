@@ -13,7 +13,7 @@
 (:constants R - robot)
 
 (:predicates
- (at ?m - movable ?o - office) ; The object B is at office o
+ (at ?B - movable ?o - office) ; The object B is at office o
  (adj ?o1 ?o2 - office) ; The offices o1 and o2 are adjacent
  (dirty ?o - office) ; The office o is dirty
  (empty ?o - office) ; There is no box at office o

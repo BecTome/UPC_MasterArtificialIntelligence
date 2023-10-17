@@ -1,0 +1,58 @@
+Planning service: http://solver.planning.domains/solve
+Domain: clean-robot, Problem: MOVEITOF
+
+warning: parameter ?B of op PUSH has unknown or empty type BOX. skipping op --- OK.
+ Match tree built with 24 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: MOVEITOF
+	#Actions: 24
+	#Fluents: 9
+Landmarks found: 1
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 4
+#RP_fluents 4
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{1/1/0}:IW(1) -> [2][3][4][5]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 4
+Total time: 5.79999e-05
+Nodes generated during search: 21
+Nodes expanded during search: 11
+IW search completed
+
+
+warning: parameter ?B of op PUSH has unknown or empty type BOX. skipping op --- OK.
+ Match tree built with 24 nodes.
+
+PDDL problem description loaded: 
+	Domain: CLEAN-ROBOT
+	Problem: MOVEITOF
+	#Actions: 24
+	#Fluents: 9
+Landmarks found: 1
+Starting search with IW (time budget is 60 secs)...
+rel_plan size: 4
+#RP_fluents 4
+Caption
+{#goals, #UNnachieved,  #Achieved} -> IW(max_w)
+
+{1/1/0}:IW(1) -> [2][3][4][5]rel_plan size: 0
+#RP_fluents 0Plan found with cost: 4
+Total time: 5.79999e-05
+Nodes generated during search: 21
+Nodes expanded during search: 11
+IW search completed
+
+
+Plan found:
+0.00100: (move o1 o2)
+0.00200: (move o2 o5)
+0.00300: (move o5 o6)
+0.00400: (move o6 o9)
+Metric: 0.004
+Makespan: 0.004
+States evaluated: undefined
+Planner found 1 plan(s) in 0.447secs.

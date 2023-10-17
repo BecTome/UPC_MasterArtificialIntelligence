@@ -1,0 +1,10 @@
+;;!domain: clean-robot
+;;!problem: MOVEITOF
+
+0.00100: (move o1 o2)
+0.00200: (move o2 o5)
+0.00300: (move o5 o6)
+0.00400: (move o6 o9)
+
+; Makespan: 0.004
+; Metric: 0.004

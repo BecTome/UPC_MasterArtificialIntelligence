@@ -1,0 +1,25 @@
+;;!domain: clean-robot
+;;!problem: MOVEITOIAD
+
+0.00100: (clean o1)
+0.00200: (move o1 o2)
+0.00300: (clean o2)
+0.00400: (move o2 o5)
+0.00500: (clean o5)
+0.00600: (move o5 o4)
+0.00700: (clean o4)
+0.00800: (move o4 o7)
+0.00900: (clean o7)
+0.01000: (move o7 o8)
+0.01100: (clean o8)
+0.01200: (move o8 o9)
+0.01300: (clean o9)
+0.01400: (move o9 o6)
+0.01500: (clean o6)
+0.01600: (move o6 o3)
+0.01700: (clean o3)
+0.01800: (move o3 o2)
+0.01900: (move o2 o1)
+
+; Makespan: 0.019
+; Metric: 0.019
