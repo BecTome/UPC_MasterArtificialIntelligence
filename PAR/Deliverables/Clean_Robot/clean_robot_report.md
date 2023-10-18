@@ -244,7 +244,6 @@ So that the final state is successfully reached.
 In terms of the search process, the returned output is the following:
 
 ```lisp
-Plan found with cost: -1.55484e+12
 Nodes generated during search: 104
 Nodes expanded during search: 43
 
@@ -280,7 +279,6 @@ The aim of this test is to check that the actions can be run individually and th
 The planner decided to move the robot following the diagonal path (the shortest one).
 
 ```lisp
-Plan found with cost: 4
 Nodes generated during search: 21
 Nodes expanded during search: 11
 
@@ -309,7 +307,6 @@ In this case, the planner decided to clean the offices first and then move the r
 The output of the planner is the following:
 
 ```lisp
-Plan found with cost: 7.96205e+17
 Nodes generated during search: 81
 Nodes expanded during search: 28
 
@@ -332,7 +329,6 @@ In this case, the plan is similar to the previous one but the robot has to retur
 The output of the planner is the following:
 
 ```lisp	
-Plan found with cost: 19
 Nodes generated during search: 76
 Nodes expanded during search: 27
 
@@ -354,13 +350,13 @@ It is not trivial to compare the complexity fixing the rest of the parameters be
 - Analysis of the size: 2 boxes and 2 dirty offices in similar positions keeping simmetry as much as possible.
 - Analysis of the number of boxes: 3x3 grid with 2 dirty offices in similar positions keeping simmetry as much as possible.
 
-The following imageS sçhow the results of the analysis:
+The following images shows the results of the analysis:
 
-<img src="./img/metric_vs_N.png" alt="Size analysis" width="500"/>
+<img src="./img/metric_vs_N.png" alt="Size analysis"  style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
 
-<img src="./img/metric_vs_nbox.png" alt="Size analysis" width="500"/>
+<img src="./img/metric_vs_nbox.png" alt="Size analysis"  style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
 
-From this analysis, and with the specific settings for our analysis, it can be concluded that the complexity of the problem is exponential with respect to the size of the problem and the number of boxes.
+From this analysis, and with the specific settings for our analysis, it can be concluded that the complexity of the problem is exponential with respect to the number of boxes and linear respect to the size of the problem.
 
 # Conclusions
 
