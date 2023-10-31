@@ -4,7 +4,7 @@
     BTA  ALA - kitchen ; Kitchen
     t1 t2 t3 - tray    ; Boxes
     r1 r2 - robot   ; Robot
-    c1 c2 c3 C4 - customer   ; Clients
+    c1 c2 c3 c4 - customer   ; Clients
     )
 
 
@@ -31,7 +31,7 @@
  (at c1 PUA)
  (at c2 AUA)
  (at c3 PLA)
-  (at c4 AMA)
+ (at c4 AMA)
 
 ;  (at c3 PLA)
 
