@@ -1,5 +1,5 @@
 
-Practical Exercise: Waiter Robotic Task
+Practical Exercise: Planning and Execution of a Robotic Waiter Task in a Restaurant Setting
 -------
 
 <!-- Create a colored box with author name and institution -->
@@ -15,29 +15,38 @@ Practical Exercise: Waiter Robotic Task
 - [1. Introduction](#1-introduction)
 - [2. Planning method](#2-planning-method)
   - [2.1. Search algorithm](#21-search-algorithm)
-- [3. Problem Analysis](#3-problem-analysis)
-  - [3.1. Predicates](#31-predicates)
-  - [3.2. Initial and Goal States](#32-initial-and-goal-states)
-    - [3.2.1. Initial State](#321-initial-state)
-    - [3.2.2. Goal State](#322-goal-state)
-- [4. Implementation](#4-implementation)
-  - [4.1. Testing](#41-testing)
-    - [4.1.1. Test case 1: Just Move (Longest Path)](#411-test-case-1-just-move-longest-path)
-    - [4.1.2. Test case 2: Just Stay](#412-test-case-2-just-stay)
-    - [4.1.3. Test case 3: Clean and Move](#413-test-case-3-clean-and-move)
-    - [4.1.4. Test case 4: Clean and Return](#414-test-case-4-clean-and-return)
-  - [4.2. Analysis](#42-analysis)
-- [Conclusions](#conclusions)
-- [Future Work](#future-work)
-- [Appendix](#appendix)
-  - [Appendix A: PDDL Code Main Problem](#appendix-a-pddl-code-main-problem)
-  - [Appendix B: PDDL Code Test Case 1](#appendix-b-pddl-code-test-case-1)
-  - [Appendix C: PDDL Code Test Case 2](#appendix-c-pddl-code-test-case-2)
-  - [Appendix D: PDDL Code Test Case 3](#appendix-d-pddl-code-test-case-3)
-  - [Appendix E: PDDL Code Test Case 4](#appendix-e-pddl-code-test-case-4)
+- [3. State Space Analysis](#3-state-space-analysis)
+  - [3.1. General Approach](#31-general-approach)
+  - [3.2. Constrained Approach](#32-constrained-approach)
+    - [3.2.1. Test Example Size](#321-test-example-size)
+- [4. PDDL Approach](#4-pddl-approach)
+  - [4.1. General version](#41-general-version)
+  - [4.2. Example of complex problem using this general approach](#42-example-of-complex-problem-using-this-general-approach)
+  - [4.3. Problem Simplification](#43-problem-simplification)
+  - [4.4. Further optimization](#44-further-optimization)
+  - [4.5. Conclusions about implementation](#45-conclusions-about-implementation)
+- [5. Testing](#5-testing)
+- [6. Conclusions](#6-conclusions)
+- [7. Future Work](#7-future-work)
+- [Appendix A: General implementation](#appendix-a-general-implementation)
+  - [A.1 Complex Problem Implementation](#a1-complex-problem-implementation)
+  - [A.2 Simple Problem with general approach](#a2-simple-problem-with-general-approach)
+- [Appendix B: Specific implementation](#appendix-b-specific-implementation)
+  - [B.1 Simple Problem in Specific Implementation](#b1-simple-problem-in-specific-implementation)
+- [Appendix C: Improved Specific Implementation](#appendix-c-improved-specific-implementation)
+  - [C.1 Simple Problem in Improved Specific Implementation](#c1-simple-problem-in-improved-specific-implementation)
 
 # 1. Introduction
 
+This work involves developing a planning and execution system for robotic waiters at HANAKI, a Japanese restaurant in Barcelona. The objective is to employ these robotic agents to serve food to customers efficiently and autonomously.
+
+The task involves designing a system where robotic waiters can pick up plates of food from a buffet area, navigate a discretely mapped restaurant, and serve the food to customers located in various areas within the restaurant. Customers place their orders through a mobile app, simplifying the task. The robot's movement is discrete, and it cannot move through areas blocked by walls. 
+
+To solve this problem, the world is defined using predicates, representing relationships between locations, plates, customers, and their states. Actions include picking up a plate, serving a customer, filling a plate with food, and moving between adjacent locations. Additional actions can be introduced for optimization.
+
+The planner is modeled using PDDL (Planning Domain Definition Language) and tested with various scenarios of increasing complexity.
+
+The documentation for this exercise should includes an introduction to the problem, an analysis of the problem's components (objects, operators, predicates), the PDDL implementations, testing cases and their results, and an analysis of the complexity and number of nodes generated and expanded during planning. 
 
 # 2. Planning method
 The planning method used in this work is STRIPS. The Stanford Research Institute Problem Solver, known by its acronym STRIPS, is an automated planner developed by Richard Fikes and Nils Nilsson in 1971 at SRI International.
@@ -63,7 +72,7 @@ The depth is the number of actions which are run in parallel in a certain moment
 
 # 3. State Space Analysis
 
-## General Approach
+## 3.1. General Approach
 
 In fist place, let's parametrize a general version of the problem. 
 
@@ -97,7 +106,7 @@ $$
 \dfrac{N_S!}{(N_S - N_R)!}\dfrac{N_S!}{(N_S - N_C)!}2^{N_P}2^{N_C}
 $$
 
-## Constrained Approach
+## 3.2. Constrained Approach
 
 In the problem statement, there is only one robot, i.e., $N_R$ is one. Getting reduced the problem to
 
@@ -127,7 +136,7 @@ $$
 
 which is also exponential but grows lower than in the case of the rooms given that the polynomic component decreases when the exponential grows.
 
-### Test Example Size
+### 3.2.1. Test Example Size
 
 In the test provided, $N_S$ is 7, $N_C$ is 1 and $N_P$ is also 1. It is assumed that the clients can't be in the kitchen so for the clients the number or rooms is 6.
 
@@ -138,89 +147,107 @@ $$
 $$
 
 
-# PDDL Approach
+# 4. PDDL Approach
+
+## 4.1. General version
+
+In the general version:
+- There can be more than one robot.
+- There can be more than one customer.
+- There can be more than one plate per robot because they have trays for different plates.
+- There can be more than one kitchen.
+- The robots can't be in the same room at the same time.
+- The customers can't be in the same room at the same time.
+
 Previously to the predicates definition and with the purposes of having clean code and clean output, the following types are defined:
 
 ```lisp
 (:types
-    box - movable 
-    robot - movable 
-    office)
+    robot - physic
+    customer - physic
+    kitchen - loc
+    room - loc
+    tray
+ )
 ```	
 
-where `movable` is a type that includes `box` and `robot` types.
+where `physic` is a type that includes `customer` and `robot` types. Basically it means that they are objects that need physical space (a location). 
 
-In addition to this and given that there is always just one robot, the following constant is defined:
-
-```lisp
-(:constants
-    R - robot)
-```
+The `loc` type is a type that includes `kitchen` and `room`. `kitchen` is a type that includes the rooms where the food is cooked and the customers cannot be and the `room` includes all the possible rooms where the customers can be.
 
 ## 3.1. Predicates
 
 The used predicates are the following:
 
-- at($m$, $o$): The movable object $m$ is at office $o$
-- adj($o_1$, $o_2$): Offices $o_1$ and $o_2$ are adjacent
-- dirty($o$): The office $o$ is dirty
-- empty($o$): The office $o$ is empty (no boxes in it)
-
 ```lisp
 (:predicates
-        (at ?m - movable ?o - office) ; The object B is at office o
-        (adj ?o1 ?o2 - office) ; The offices o1 and o2 are adjacent
-        (dirty ?o - office) ; The office o is dirty
-        (empty ?o - office) ; There is no box at office o
+        (at ?m - physic ?o - loc) ; The object m is at location o
+        (adj ?o1 ?o2 - loc) ; The locations o1 and o2 are adjacent
+        (served ?c - customer) ; The customer c has been served
+        (belong ?r - robot ?t - tray) ; The robot r has a tray t
+        (occupied ?t - tray); The robot r has a plate in its tray t
+        (empty ?o - loc) ; The location o is empty of other robots
 )
 ```	
+
+The `belong` predicate, guarantees that the plates and free spaces are attached to a concrete robot.
+
 ## 3.2. Actions
 
-- **Clean($o$)**: The robot cleans the office $o$. The precondition is that the robot is at the office $o$ and the effect is that the office $o$ is not dirty.
-    - **Precondition**: at(R, $o$) $\land$ dirty($o$)
-    - **Effect**: $\neg$ dirty($o$)
-    ```lisp	
-    (:action clean
-        :parameters (?o - office)
-        :precondition (and (at R ?o) ; The robot is at office o
-                        (dirty ?o) ; The office o is dirty
-                        )
-        :effect (and (not (dirty ?o)) ; The office o is not dirty anymore
-                )
-    )
-    ```	
 
-- **Move($o_1$, $o_2$)**: The robot (R) moves from office $o_1$ to office $o_2$. The precondition is that the robot is at the office $o_1$, both offices are adjacent and the effect is that the robot is at the office $o_2$.
-    - **Precondition**: at(R, $o_1$) $\land$ adj($o_1$, $o_2$)
-    - **Effect**: at(R, $o_2$) $\land$ $\neg$ at($o_1$)
+
+- **Pick-up($k$, $r$, $t$)**: The robot $r$ picks up the plate from the kitchen $k$ and puts it on the tray $t$ . The precondition is that the robot is at the kitchen $k$, the tray $t$ belongs to $r$ and the it is empty. The effect is that the robot has the tray $t$ and the kitchen $k$ is empty.
+    - **Precondition**: at($r$, $k$) $\land$ empty($k$) $\land$ belong($r$, $t$) $\land$ $\neg$ occupied($t$)
+    - **Effect**: $\neg$ empty($k$) $\land$ occupied($t$)
+
+    ```lisp
+    (:action pick-up
+        :parameters (?k - kitchen ?r - robot ?t - tray)
+        :precondition (and (at ?r ?k) ; The robot r is at kitchen k
+                           (belong ?r ?t) ; The robot r has a tray t
+                           (not (occupied ?t)) ; The robot has space in tray t
+        )
+        :effect (and (occupied ?t)) ; The tray t is occupied with a plate
+    )
+    ```
+
+- **move($r$, $o_1$, $o_2$)**: The robot $r$ moves from the location $o_1$ to the location $o_2$. The precondition is that the robot is at the location $o_1$ and both locations are adjacent. The effect is that the robot is at the office $o_2$ and the office $o_1$ is empty.
+    - **Precondition**: at($r$, $o_1$) $\land$ adj($o_1$, $o_2$) $\land$ empty($o_2$)
+    - **Effect**: $\neg$ at($r$, $o_1$) $\land$ at($r$, $o_2$) $\land$ $\neg$ empty($o_1$) $\land$ empty($o_2$)
 
     ```lisp
     (:action move
-        :parameters (?o1 ?o2 - office)
-        :precondition (and (adj ?o1 ?o2) ; Both offices are adjacent
-                            (at R ?o1) ; The robot is at office o1
-                    )
-        :effect (and (not (at R ?o1)) ; The robot is not at office o1 anymore
-                    (at R ?o2) ; The robot is now at office o2
-                )
+        :parameters (?r - robot ?o1 ?o2 - loc)
+        :precondition (and (adj ?o1 ?o2) ; Both rooms are adjacent
+                           (at ?r ?o1) ; The object is at room o1
+                           (not (empty ?o1)) ; The room o1 is not empty of robots
+                           (empty ?o2) ; The room o2 is empty of robots
+        )
+        :effect (and (not (at ?r ?o1)) ; The object is not at room o1 anymore
+                     (at ?r ?o2) ; The object is now at room o2
+                     (not (empty ?o2)) ; The room o2 is not empty anymore
+                     (empty ?o1) ; The room o1 is empty of  robots
+        )
     )
     ```
-- **Push($B$, $o_1$, $o_2$)**: The robot pushes the box (B) from office $o_1$ to office $o_2$. The precondition is that the robot is at the office $o_1$, both offices are adjacent and office $o_2$ is empty. The effect is that the box is at the office $o_2$ and the office $o_1$ is empty. The robot displaces itself to the office $o_2$.
-    - **Precondition**: at(R, $o_1$) $\land$ adj($o_1$, $o_2$) $\land$ at($B$, $o_1$) $\land$ empty($o_2$)
-    - **Effect**: at($B$, $o_2$) $\land$ empty($o_1$) $\land$ at(R, $o_2$) $\land$ $\neg$ at(R, $o_1$) 
-```lisp
-(:action push
-    :parameters (?B - box ?o1 ?o2 - office)
-    :precondition (and (at R ?o1) ; The robot is at office o1
-                       (adj ?o1 ?o2) ; Both offices are adjacent
-                       (at ?B ?o1) (empty ?o2) ; The box B is at o1 and o2 is empty
-                   )
-    :effect (and (at R ?o2) (not (at R ?o1)) ; Move the robot to o2
-                 (at ?B ?o2) (not (at ?B ?o1)) ; Move the box to o2
-                 (not (empty ?o2)) (empty ?o1) ; o2 is not empty anymore and o1 is empty
+- **Serve($r$, $c$, $t$)**: The robot $r$ serves the customer $c$ with the plate in the tray $t$. The precondition is that the robot is at the same location as the customer, the customer has not been served yet, the robot has a tray and the tray is occupied. The effect is that the robot does not have a plate in the tray anymore and the customer has been served.
+  - **Precondition**: at($r$, $o$) $\land$ at($c$, $o$) $\land$ $\neg$ served($c$) $\land$ belong($r$, $t$) $\land$ occupied($t$)
+  - **Effect**: $\neg$ occupied($t$) $\land$ served($c$)
+  
+    ```lisp
+        (:action serve
+            :parameters (?o - loc ?c - customer ?r - robot ?t - tray)
+            :precondition (and (at ?r ?o) ; The robot is at room o
+                        (at ?c ?o) ; The customer is at room o
+                        (not (served ?c)) ; The customer has not been served yet
+                        (belong ?r ?t) ; The robot has a tray t
+                        (occupied ?t) ; The robot has a plate in its tray t
             )
-)
-```
+            :effect (and (not (occupied ?t)) ; The robot does not have a plate in its tray t anymore
+                (served ?c) ; The customer has been served
+            )
+        )
+    ```
 
 ## 3.2. Initial and Goal States
 
@@ -228,394 +255,624 @@ The used predicates are the following:
 The **initial state** of any problem related to our domain is composed as follows:
 
 - **Predicates**: 
-    - Adjacency definition for all offices (adj($o_i$, $o_j$))
-    - Dirty offices declaration (dirty($o_k$))
-    - Box location definition for all offices (at($B$,$o_l$) and empty($o_t$))
-    - Robot is at a concrete office (at(R, $o_m$))
+    - Adjacency definition for all locations (adj($o_i$, $o_j$))
+    - Robots locations (at($r_i$, $o_j$))
+    - Clients locations (at($c_i$, $o_j$))
+    - Robots trays (belong($r_i$, $t_j$))
 
-where $i, j, k, l, m, t \in \{0, \dots , N^2 - 1\}$ and $N$ is the size of the problem.
-
-Example for $N$ equal to 2:
-
-```lisp
-(:objects
-    o1 o2 o3 o4 - office ; Offices
-    A - box B - box   ; Boxes
-)
-
-(:init
-    (adj o1 o2) (adj o1 o3) 
-    (adj o2 o1) (adj o2 o4) 
-    (adj o3 o1) (adj o3 o4) 
-    (adj o4 o2) (adj o4 o3) ; Adjacency definition
-
-    (dirty o1) (dirty o4) ; Dirty offices
-
-    (at A o1) (empty o2)
-    (empty o3) (at B o4) ; Box position definition
-
-    (at R o1) ; Robot is at office o1
-)
-```
 
 ### 3.2.2. Goal State
 The **final state** of any problem related to our domain is composed as follows:
 
 - **Predicates**: 
-    - All dirty offices in the initial state are clean (not dirty($o_j$))
-    - Robot is at a concrete office (at(R, $o_m$))
-    - All boxes are at the office where they should be (at($B$, $o_l$))
-
-where $j, l, m \in \{0, \dots , N^2 - 1\}$ and $N$ is the size of the problem.
-
-Example:
-```lisp	
-(:goal (and
-    ; Robot final location
-    (at R o4)
-
-    ; Clean offices
-    (not (dirty o1))
-    (not (dirty o4))
-
-    ; Boxes final locations
-    (at A o2) (at B o3)
-
-))
-```
+    - All clients have been served (served($c_i$))
+    - Robots final locations (at($r_i$, $o_j$))
 
 # 4. Implementation
 
-The implementation of the planner is done in PDDL language and the planner used is the one provided by the course. 
+## Main problem implementation using general approach
+
+The implementation of the planner is done in PDDL language and the planner used is the one provided by the course. The domain can be found in appendix A.
 
 The main example used for the development of the initial solution is the one provided in the problem statement. The following image shows the initial and final states of the problem:
 
-![Initial and final states](./img/initial_final_states.png)
+<img src="./img/initial_final_states.png" alt="Initial and final states" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
 
-The following image shows the solution found by the planner ($o_4$ and $o_3$ are dirty):
+<br>
 
-<img src="./img/main_plan.png" alt="Test case 3" width="250" height="200"/>
-<img src="./img/grid_solution.png" alt="Test case 3" width="250"/>
+The following image shows the solution found by the planner (problem in Appendix A.2):
+
+<img src="./img/main_plan.png" alt="main plan" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+
+<br>
 
 So the robot:
 
-1. Goes to $o_4$ and cleans it
-2. Goes to $o_1$ and pushes the box $A$ to $o_2$
-3. Goes to $o_3$ and cleans it
-4. Goes to $o_9$ through $o_6$ and pushes the box $B$ to $o_7$
-5. It goes to the final location $o_4$
+1. Picks up the food from kitchen BTA and fills the tray
+2. Goes to PMA and serves the customer
+3. Goes back to BTA
 
 So that the final state is successfully reached.
 
 In terms of the search process, the returned output is the following:
 
 ```lisp
-Nodes generated during search: 104
-Nodes expanded during search: 43
+Nodes generated during search: 41
+Nodes expanded during search: 24
 
-Metric: 0.013000000000000001
-Makespan: 0.013000000000000001
+Metric: 0.008
+Makespan: 0.008
 States evaluated: undefined
-Planner found 1 plan(s) in 0.622secs.
+Planner found 1 plan(s) in 0.751secs.
 ``````
 
 This problem is going to be taken as a baseline for comparison with the rest of the test cases.
 
-## 4.1. Testing
+## 4.2. Example of complex problem using this general approach
 
-For testing purposes, the following test cases are used:
+See problem code in Appendix A.1.
 
-- **Test case 1**: Size 3x3. Move from $o_1$ to $o_9$. There are no boxes to push and the offices are clean.
-- **Test case 2**: Size 3x3. Move from $o_1$ to $o_1$ (stay). There are no boxes to push and the offices are dirty.
-- **Test case 3**: Size 3x3. Move from $o_1$ to $o_9$. There are no boxes to push and the all the offices are dirty.
-- **Test case 4**: Size 3x3. Move from $o_1$ to $o_1$ (stay). There are no boxes to push and the all the offices are dirty.
+In this case there are:
 
-### 4.1.1. Test case 1: Just Move (Longest Path)
+- 2 robots (r1 in red and r2 in green)
+- 4 customers
+- 2 kitchens
+- Robot 1 has 2 trays
+- Robot 2 has 1 tray
 
-The aim of this test is to check that the actions can be run individually and that the robot can move from one office to another. The following image shows the final plan:
+<br>
 
-<!-- Add in two columns the plan and the grid for test 1  -->
+<img src="./img/example_complex.jpg" alt="Test case 3" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+
+<br>
+
+The solution found by the planner is the following:
+
+1. $r_2$ moves to PUA to let $R_1$ pick up the food
+2. $r_1$ picks up the food from BTA and fills the tray 1
+3. $r_1$ moves to AUA to serve the customer
+4. $r_1$ moves to ALA to pick up the food
+5. $r_1$ moves to PLA to serve the customer
+6. $r_1$ moves to ALA to pick up the food
+7. $r_2$ moves to BTA to pick up the food
+8. $r_2$ moves to PUA to serve the customer
+9. $r_1$ moves to PMA to serve the customer
+10. $r_2$ moves to its final location BTA
+11. $r_1$ moves to its final location AUA
 
 
-<img src="./img/test_case_1.png" alt="Test case 1" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+<img src="./img/complex_general_plan.png" alt="ComplexGeneralPlan" style="display: block;margin-right:auto;margin-left:auto;width:25%"/>
 
-<img src="./img/test_case_1_grid.png" alt="Test case 1" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
-
-
-The planner decided to move the robot following the diagonal path (the shortest one).
+<br>
 
 ```lisp
-Nodes generated during search: 21
-Nodes expanded during search: 11
-
-Metric: 0.004
-Makespan: 0.004
+Nodes generated during search: 369
+Nodes expanded during search: 283
+Metric: 0.029
+Makespan: 0.029
 States evaluated: undefined
-Planner found 1 plan(s) in 0.447secs.
+Planner found 1 plan(s) in 1.363secs.
 ```
 
-This test case, as it hasn't almost any constraint, is the most efficient one, having a cost much lower than the rest of the test cases. Only 21 nodes are generated and 11 expanded in the search tree.
+In this complex task, the number of nodes is much higher than in the case before. This is because the planner has to explore all the possible paths to find the optimal one. In this case, the planner has to explore 369 nodes and expand 283 nodes in the search tree.
 
-### 4.1.2. Test case 2: Just Stay
+## 4.3. Problem Simplification
 
-In this test, the initial and the final states were the same office. In this case, no plan could be found because there's no `stay` action.
+As there is only one robot, one tray, one kitchen and one customer, the problem can be simplified. In this case, the problem is reduced. 
 
-### 4.1.3. Test case 3: Clean and Move
+Now robot and customer are constants and the tray is replaced by a simple `hasfood` which is a boolean that indicates if the robot has food or not. Without tray, the `belong` predicate is not needed anymore.
 
-In this test, the robot has to clean all the offices and move from $o_1$ to $o_9$. The following image shows the final plan:
+See domain code in Appendix B and problem code in Appendix B.1.
 
-<img src="./img/test_case_3.png" alt="Test case 3" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+<img src="./img/simple_adapted_plan.png" alt="SimpleAdaptedPlan" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
 
-<img src="./img/test_case_3_grid.png" alt="Test case 3" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+<br>
 
-In this case, the planner decided to clean the offices first and then move the robot to the final location [1 - 2 - 5 - 4 - 7 - 8 - 9 - 6 - 3 - 6 - 9].
-
-The output of the planner is the following:
+The metrics are
 
 ```lisp
-Nodes generated during search: 81
-Nodes expanded during search: 28
+Nodes generated during search: 33
+Nodes expanded during search: 20
 
-Metric: 0.019
-Makespan: 0.019
+Metric: 0.008
+Makespan: 0.008
 States evaluated: undefined
-Planner found 1 plan(s) in 0.298secs
+Planner found 1 plan(s) in 0.632secs.
 ```
 
-Even not having boxes, the cost of this plan is higher than the one of the main example. This is because the robot has to clean all the offices before moving to the final location so the cost of the plan is higher due to this constraint.
+The number of nodes is lower than in the previous case. This is because the planner has to explore less nodes to find the optimal solution.
 
-### 4.1.4. Test case 4: Clean and Return
+## 4.4. Further optimization
 
-In this case, the plan is similar to the previous one but the robot has to return to the initial location. The following image shows the final plan:
+Some actions can be done in pairs like pick up and move or serve and move. See domain in Appendix C and problem in Appendix C.1.
 
-<img src="./img/test_case_4.png" alt="Test case 4" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+<img src="./img/simple_improved_plan.png" alt="SimpleOptimized" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
 
-<img src="./img/test_case_4_grid.png" alt="Test case 4" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+<br>
 
-The output of the planner is the following:
-
-```lisp	
-Nodes generated during search: 76
-Nodes expanded during search: 27
-
-Metric: 0.019
-Makespan: 0.019
+```lisp
+Nodes generated during search: 31
+Nodes expanded during search: 18
+Metric: 0.007
+Makespan: 0.007
 States evaluated: undefined
-Planner found 1 plan(s) in 0.284secs.
+Planner found 1 plan(s) in 0.797secs.
 ```
 
-The cost of this plan is almost the same as the one of the previous test case. This is because the robot has to clean all the offices before moving to the final location so the cost of the plan is higher due to this 
-constraint. The differences are due just to the different path that the robot has to follow to return to the initial location.
+Plan:
+- Pick up and move from BTA to AUA
+- Move to PMA
+- Serve and move to PLA
+- Move to BTA
 
-## 4.2. Analysis
+See code in Appendix B.
 
-In this section, the complexity of the problem is analyzed after varying the size of the problem and the number of boxes. 
+Results don't improve.
 
-It is not trivial to compare the complexity fixing the rest of the parameters because, for example, for different sizes, the same number of boxes can be located in many different places. In this case, the simmetry of the problems have been tried to keep in all the cases.
+## 4.5. Conclusions about implementation
 
-- Analysis of the size: 2 boxes and 2 dirty offices in similar positions keeping simmetry as much as possible.
-- Analysis of the number of boxes: 3x3 grid with 2 dirty offices in similar positions keeping simmetry as much as possible.
+The implementation design is very important and it is based on the art of balancing generalizability and good performance. If the problem is too general, the search space is too big and the planner takes too long to find a solution. If the problem is too specific, the planner can't find a solution in certain situations because it is not able to generalize the problem.
 
-The following images shows the results of the analysis:
+More specific, most of the times, implies less propositions and a smaller search space. This is why the performance improves in each approach.
 
-<img src="./img/metric_vs_N.png" alt="Size analysis"  style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+Finally, grouping some of the actions in pair can improve performance but it is more noticeable in bigger problems where a significant amount of redundant actions can be found.
 
-<img src="./img/metric_vs_nbox.png" alt="Size analysis"  style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
+# 5. Testing
 
-From this analysis, and with the specific settings for our analysis, it can be concluded that the complexity of the problem is exponential with respect to the number of boxes and linear respect to the size of the problem.
+The base for testing is [Example of complex problem using this general approach](#Example-of-complex-problem-using-this-general-approach). For testing purposes, the following test cases are used:
 
-# Conclusions
+- **Increase Number of Rooms**: Rooms are introduced by rows between PUA and AUA and PMA and AMA, keeping the wall in between. In the image below, 4 new rooms E1, E2, E3 and E4 are added. Tested situations: 9, 11, 13 and 15 
 
-From this work, it can be concluded that the PAR paradigm is a very powerful tool to solve real-world problems. In this case, the problem of cleaning a building with a robot has been solved using a PDDL planner. The planner has been tested with different test cases and the results have been analyzed.
+<img src="./img/example_complex_EXTENDED.jpg" alt="SimpleOptimized" style="display: block;margin-right:auto;margin-left:auto;width:50%"/>
 
-For this configuration, the complexity of the problem is exponential with respect to the size of the problem and the number of boxes. This is because the planner has to explore all the possible paths to find the optimal one.
-
-It has been shown the influence of the constraints in the cost of the plan. In the case of having to clean all the offices before moving to the final location, the cost of the plan is higher than the one of just moving to the final location.
-
-Finally, it has been seen that the planner is able to find the optimal solution in a reasonable time. This is because the planner is able to prune the search tree and avoid exploring paths that are not optimal.
-
-# Future Work
-
-In this work, the planner has been tested with a small number of test cases. In the future, it would be interesting to test the planner with more test cases and with different configurations to see how the planner behaves.
-
-Finally, another interesting point to analyze is the influence of the search algorithm in the cost of the plan. In this work, the search algorithm has been fixed by default but it would be interesting to analyze the influence of the search algorithm in the cost of the plan. Benchmarking different planners and different search algorithms would be a good starting point for future analysis. 
+<br>
 
 
-# Appendix
+- **Increase Number of Customers**
 
-## Appendix A: PDDL Code Main Problem
+The obtained results are the following:
+
+<img src="./img/metrics_add_rooms.png" alt="SimpleOptimized" style="display: block;margin-right:auto;margin-left:auto;width:80%"/>
+
+<br>
+
+<img src="./img/metrics_add_clients.png" alt="SimpleOptimized" style="display: block;margin-right:auto;margin-left:auto;width:80%"/>
+
+<br>
+
+For this concrete configuration, the complexity of the problem is linear in both cases. However, there could be more complex configurations of the rooms where the complexity is exponential with respect to the number of rooms and customers. It will depend, not that much on the number of rooms but in how they are distributed with respect to the customers and the kitchens.
+
+# 6. Conclusions
+
+From this work, it can be concluded that, there is a strong relationship between the specification of the problem and the performance of the planner. The more specific the problem is, the better the performance of the planner is. However, the more specific the problem is, the less generalizable it is.
+
+In this work, the problem has been simplified to the maximum to improve the performance of the planner. However, it is important to keep in mind that the problem is not generalizable anymore. In this case, the problem is not generalizable because there is only one robot, one customer, one kitchen and one tray. In a real scenario, there would be more than one robot, more than one customer, more than one kitchen and more than one tray. 
+# 7. Future Work
+
+In future work, different room arrangements can be tested to see how the complexity of the problem changes. In this work, the rooms are arranged in a line but they can be arranged in a square or in a circle. The complexity of the problem will depend on the number of rooms and the arrangement of them.
+
+
+# Appendix A: General implementation
 
 ```lisp
-(define (problem clean-robot) (:domain clean-robot)
-(:objects
-    o1 o2 o3 o4 o5 o6 o7 o8 o9 - office ; Offices
-    A - box B - box C - box    ; Boxes
+;Header and description
+
+(define (domain waiter-robot)
+
+    ;import needed requirements
+    (:requirements :strips :negative-preconditions :typing)
+
+    ;define types just for simplicity
+    (:types
+        robot - physic
+        customer - physic
+        kitchen - loc
+        room - loc
+        tray
+    )
+
+    (:predicates
+        (at ?m - physic ?o - loc) ; The object m is at location o
+        (adj ?o1 ?o2 - loc) ; The locations o1 and o2 are adjacent
+        (served ?c - customer) ; The customer c has been served
+        (belong ?r - robot ?t - tray) ; The robot r has a tray t
+        (occupied ?t - tray); The robot r has a plate in its tray t
+        (empty ?o - loc) ; The location o is empty of other robots
+    )
+
+    (:action pick-up
+        :parameters (?k - kitchen ?r - robot ?t - tray)
+        :precondition (and (at ?r ?k) ; The robot r is at kitchen k
+                           (belong ?r ?t) ; The robot r has a tray t
+                           (not (occupied ?t)) ; The robot has space in tray t
+        )
+        :effect (and (occupied ?t)) ; The tray t is occupied with a plate
+    )
+
+    (:action move
+        :parameters (?r - robot ?o1 ?o2 - loc)
+        :precondition (and (adj ?o1 ?o2) ; Both rooms are adjacent
+                           (at ?r ?o1) ; The object is at room o1
+                           (not (empty ?o1)) ; The room o1 is not empty of other robots
+                           (empty ?o2) ; The room o2 is empty of other robots
+        )
+        :effect (and (not (at ?r ?o1)) ; The object is not at room o1 anymore
+                     (at ?r ?o2) ; The object is now at room o2
+                     (not (empty ?o2)) ; The room o2 is not empty anymore
+                     (empty ?o1) ; The room o1 is empty of other robots
+        )
+    )
+
+    (:action serve
+        :parameters (?o - loc ?c - customer ?r - robot ?t - tray)
+        :precondition (and (at ?r ?o) ; The robot is at room o
+                    (at ?c ?o) ; The customer is at room o
+                    (not (served ?c)) ; The customer has not been served yet
+                    (belong ?r ?t) ; The robot has a tray t
+                    (occupied ?t) ; The robot has a plate in its tray t
+        )
+        :effect (and (not (occupied ?t)) ; The robot does not have a plate in its tray t anymore
+            (served ?c) ; The customer has been served
+        )
+    )
 )
+```
+
+## A.1 Complex Problem Implementation
+
+```lisp
+(define (problem waiter-robot) (:domain waiter-robot)
+(:objects
+    PUA AUA PMA AMA PLA - room ; Rooms in restaurant
+    BTA  ALA - kitchen ; Kitchen
+    t1 t2 t3 - tray    ; Boxes
+    r1 r2 - robot   ; Robot
+    c1 c2 c3 c4 - customer   ; Clients
+    )
+
 
 (:init
 
  ; Adjacency conditions
- (adj o1 o2) (adj o2 o1)
- (adj o1 o4) (adj o4 o1)
+ (adj PUA AUA) (adj AUA PUA)
+ (adj AUA AMA) (adj AMA AUA)
+ (adj AMA ALA) (adj ALA AMA)
+ (adj ALA PLA) (adj PLA ALA)
+ (adj PLA PMA) (adj PMA PLA)
+ (adj PMA PUA) (adj PUA PMA)
+ (adj AUA BTA) (adj BTA AUA)
 
- (adj o2 o5) (adj o5 o2)
- (adj o2 o3) (adj o3 o2)
+ ; Robot initial locations map
+             (at r1 BTA) 
+ (empty PUA) (empty AUA) 
+ (empty PMA) (at r2 AMA) 
+ (empty PLA) (empty ALA)
 
- (adj o3 o6) (adj o6 o3)
- (adj o4 o5) (adj o5 o4)
+ ; Clients initial locations map
+    (at c1 PUA)
+    (at c2 AUA)
+    (at c3 PLA)
+    (at c4 PMA)
 
- (adj o4 o7) (adj o7 o4)
- (adj o5 o6) (adj o6 o5)
-
- (adj o5 o8) (adj o8 o5)
- (adj o6 o9) (adj o9 o6)
-
- (adj o7 o8) (adj o8 o7)
- (adj o8 o9) (adj o9 o8)
- 
- ; Robot initial location
- (at R o7)
-
- ; Box initial locations map
- (at A o1) (empty o2) (empty o3) 
- (empty o4) (empty o5) (at B o6) 
- (empty o7) (empty o8) (at C o9)
-
- ; Dirty offices
- (dirty o3)
- (dirty o4)
-
+ ; Trays assignments
+    (belong r1 t1)
+    (belong r1 t2)
+    (belong r2 t3)
+    
 )
 
 (:goal (and
-    ; Robot final location
-    (at R o4)
 
-    ; Clean offices
-    (not (dirty o3))
-    (not (dirty o4))
+; Serve all clients
+    (served c1)
+    (served c2)
+    (served c3)
+    (served c4)
 
-    ; Boxes final locations
-    (at A o2) (at B o3) (at C o7)
-
-))
+; Define final locations
+             (at r2 BTA) 
+ (empty PUA) (at r1 AUA) 
+ (empty PMA) (empty AMA) 
+ (empty PLA) (empty ALA)
+ 
 )
+)
+)
+
 ```
 
-## Appendix B: PDDL Code Test Case 1
+## A.2 Simple Problem with general approach
 
 ```lisp
-(define (problem MOVEITOF) (:domain clean-robot)
+(define (problem waiter-robot) (:domain waiter-robot)
 (:objects
-    o1 o2 o3 o4 o5 o6 o7 o8 o9 - office ; Offices
-)
+    PUA AUA PMA AMA PLA ALA - room ; Rooms in restaurant
+    BTA - kitchen ; Kitchen
+    t1 - tray    ; Boxes
+    r1 - robot   ; Robot
+    c1 - customer   ; Clients
+    )
+
 
 (:init
 
  ; Adjacency conditions
- [...]
+ (adj PUA AUA) (adj AUA PUA)
+ (adj AUA AMA) (adj AMA AUA)
+ (adj AMA ALA) (adj ALA AMA)
+ (adj ALA PLA) (adj PLA ALA)
+ (adj PLA PMA) (adj PMA PLA)
+ (adj PMA PUA) (adj PUA PMA)
+ (adj AUA BTA) (adj BTA AUA)
  
- ; Robot initial location
- (at R o1)
+ ; Robot initial locations map
+             (at r1 BTA) 
+ (empty PUA) (empty AUA) 
+ (empty PMA) (empty AMA) 
+ (empty PLA) (empty ALA)
+
+ ; Clients initial locations map
+ (at c1 PMA)
+
+ ; Trays assignments
+ (belong r1 t1)
 )
 
 (:goal (and
-    ; Robot final location
-    (at R o9)
 
-    ; Clean offices
-))
+; Serve all clients
+    (served c1)
+
+; Define final locations
+             (at r1 BTA) 
+ (empty PUA) (empty AUA) 
+ (empty PMA) (empty AMA) 
+ (empty PLA) (empty ALA)
+ 
+)
+)
 )
 ```
 
-## Appendix C: PDDL Code Test Case 2
+# Appendix B: Specific implementation
 
 ```lisp
-(define (problem MOVEITOI) (:domain clean-robot)
-(:objects
-    o1 o2 o3 o4 o5 o6 o7 o8 o9 - office ; Offices
+;Header and description
+
+(define (domain waiter-robot)
+
+    ;import needed requirements
+    (:requirements :strips :negative-preconditions :typing)
+
+    ;define types just for simplicity
+    (:types
+        robot - physic
+        customer - physic
+        kitchen - loc
+        room - loc
+    )
+
+    (:constants
+        R - robot; The robot
+        C - customer ; The customer
+    )
+
+    (:predicates
+        (at ?m - physic ?o - loc) ; The object m is at location o
+        (adj ?o1 ?o2 - loc) ; The locations o1 and o2 are adjacent
+        (served) ; The customer c has been served
+        (hasfood); The robot r has food
+    )
+
+    (:action pick-up
+        :parameters (?o - loc)
+        :precondition (and (at R ?o) ; The robot is at kitchen
+                           (not (hasfood)) ; The robot has no food
+                        )       
+        :effect (and (hasfood)) ; The robot has food
+    )
+
+    (:action move
+        :parameters (?o1 ?o2 - loc)
+        :precondition (and (adj ?o1 ?o2) ; Both rooms are adjacent
+                           (at R ?o1) ; The robot is at room o1
+                        )
+        :effect (and (not (at R ?o1)) ; The robot is not at room o1 anymore
+                     (at R ?o2) ; The robot is now at room o2
+                )
+    )
+
+    (:action serve
+        :parameters (?o - loc)
+        :precondition (and (at R ?o) ; The robot is at room o
+                           (at C ?o) ; The customer is at room o
+                           (not (served)) ; The customer has not been served yet
+                            (hasfood) ; The robot has food
+                        )
+        :effect (and (not (hasfood)) ; The robot does not have a plate in its tray t anymore
+                    (served ) ; The customer has been served
+                    )
+    )
 )
+```
+
+## B.1 Simple Problem in Specific Implementation
+
+```lisp
+(define (problem waiter-robot) (:domain waiter-robot)
+(:objects
+    PUA AUA PMA AMA PLA ALA - room ; Rooms in restaurant
+    BTA - kitchen ; Kitchen
+    )
+
 
 (:init
 
  ; Adjacency conditions
- [...]
+ (adj PUA AUA) (adj AUA PUA)
+ (adj AUA AMA) (adj AMA AUA)
+ (adj AMA ALA) (adj ALA AMA)
+ (adj ALA PLA) (adj PLA ALA)
+ (adj PLA PMA) (adj PMA PLA)
+ (adj PMA PUA) (adj PUA PMA)
+ (adj AUA BTA) (adj BTA AUA)
  
- ; Robot initial location
- (at R o1)
+ ; Robot initial locations map
+ (at R BTA) 
+ 
+ (not (hasfood))
+ (not (served))
+ ; Clients initial locations map
+ (at C PMA)
 )
 
 (:goal (and
-    ; Robot final location
-    (at R o1)
 
-    ; Clean offices
-))
+; Serve all clients
+    (served)
+
+; Define final locations
+    (at R BTA)
+
+ 
+)
+)
 )
 ```
 
-## Appendix D: PDDL Code Test Case 3
+# Appendix C: Improved Specific Implementation
 
 ```lisp
-(define (problem MOVEITOFAD) (:domain clean-robot)
-(:objects
-    o1 o2 o3 o4 o5 o6 o7 o8 o9 - office ; Offices
+;Header and description
+
+(define (domain waiter-robot)
+
+    ;import needed requirements
+    (:requirements :strips :negative-preconditions :typing)
+
+    ;define types just for simplicity
+    (:types
+        robot - physic
+        customer - physic
+        kitchen - loc
+        room - loc
+    )
+
+    (:constants
+        R - robot; The robot
+        C - customer ; The customer
+        )
+
+    (:predicates
+        (at ?m - physic ?o - loc) ; The object m is at location o
+        (adj ?o1 ?o2 - loc) ; The locations o1 and o2 are adjacent
+        (served) ; The customer c has been served
+        (hasfood); The robot r has food
+    )
+
+    (:action pick-up
+        :parameters (?o - loc)
+        :precondition (and (at R ?o) ; The robot is at kitchen
+            (not (hasfood)) ; The robot has no food
+        )
+        :effect (and (hasfood)) ; The robot has food
+    )
+
+    (:action pick-up-move
+        :parameters (?o1 - kitchen ?o2 - room)
+        :precondition (and (at R ?o1) ; The robot is at kitchen
+            (not (hasfood)) ; The robot has no food
+            (adj ?o1 ?o2) ; The locations o1 and o2 are adjacent
+        )
+        :effect (and (hasfood) ; The robot has food
+            (not (at R ?o1)) ; The robot is not at kitchen anymore
+            (at R ?o2) ; The robot is now at room o2
+        )
+    )
+
+    (:action move
+        :parameters (?o1 ?o2 - loc)
+        :precondition (and (adj ?o1 ?o2) ; Both rooms are adjacent
+            (at R ?o1) ; The robot is at room o1
+        )
+        :effect (and (not (at R ?o1)) ; The robot is not at room o1 anymore
+            (at R ?o2) ; The robot is now at room o2
+        )
+    )
+
+    (:action serve
+        :parameters (?o - loc)
+        :precondition (and (at R ?o) ; The robot is at room o
+            (at C ?o) ; The customer is at room o
+            (not (served)) ; The customer has not been served yet
+            (hasfood) ; The robot has food
+        )
+        :effect (and (not (hasfood)) ; The robot does not have a plate in its tray t anymore
+            (served) ; The customer has been served
+        )
+    )
+
+    (:action serve-move
+        :parameters (?o1 ?o2 - loc)
+        :precondition (and
+            (hasfood) ; The robot has food
+            (not (served)) ; The customer has not been served yet
+
+            (adj ?o1 ?o2) ; Both rooms are adjacent
+            (at R ?o1) ; The robot is at room o1
+            (at C ?o1) ; The customer is at room o1
+        )
+        :effect (and (served) ; The customer is served
+            (not (hasfood)) ; The robot does not have food anymore
+
+            (not (at R ?o1)) ; The robot is not at room o1 anymore
+            (at R ?o2) ; The robot is now at room o2
+        )
+
+    )
 )
+```
+
+## C.1 Simple Problem in Improved Specific Implementation
+
+```lisp
+(define (problem waiter-robot) (:domain waiter-robot)
+(:objects
+    PUA AUA PMA AMA PLA ALA - room ; Rooms in restaurant
+    BTA - kitchen ; Kitchen
+    )
+
 
 (:init
 
  ; Adjacency conditions
- [...]
+ (adj PUA AUA) (adj AUA PUA)
+ (adj AUA AMA) (adj AMA AUA)
+ (adj AMA ALA) (adj ALA AMA)
+ (adj ALA PLA) (adj PLA ALA)
+ (adj PLA PMA) (adj PMA PLA)
+ (adj PMA PUA) (adj PUA PMA)
+ (adj AUA BTA) (adj BTA AUA)
  
- ; Robot initial location
- (at R o1)
-
- (dirty o1) (dirty o2) (dirty o3) 
- (dirty o4) (dirty o5) (dirty o6) 
- (dirty o7) (dirty o8) (dirty o9)
+ ; Robot initial locations map
+ (at R BTA) 
+ 
+ (not (hasfood))
+ (not (served))
+ ; Clients initial locations map
+ (at C PMA)
 )
 
 (:goal (and
-    ; Robot final location
-    (at R o9)
 
-    ; Clean offices
-    (not (dirty o1)) (not (dirty o2)) (not (dirty o3))
-    (not (dirty o4)) (not (dirty o5)) (not (dirty o6))
-    (not (dirty o7)) (not (dirty o8)) (not (dirty o9))
-))
-)
-```
+; Serve all clients
+    (served)
 
-## Appendix E: PDDL Code Test Case 4
+; Define final locations
+    (at R BTA)
 
-```lisp
-(define (problem MOVEITOIAD) (:domain clean-robot)
-(:objects
-    o1 o2 o3 o4 o5 o6 o7 o8 o9 - office ; Offices
-)
-
-(:init
-
- ; Adjacency conditions
-[...]
  
- ; Robot initial location
- (at R o1)
-
- (dirty o1) (dirty o2) (dirty o3) 
- (dirty o4) (dirty o5) (dirty o6) 
- (dirty o7) (dirty o8) (dirty o9)
 )
-
-(:goal (and
-    ; Robot final location
-    (at R o1)
-
-    ; Clean offices
-    (not (dirty o1)) (not (dirty o2)) (not (dirty o3))
-    (not (dirty o4)) (not (dirty o5)) (not (dirty o6))
-    (not (dirty o7)) (not (dirty o8)) (not (dirty o9))
-))
+)
 )
 ```

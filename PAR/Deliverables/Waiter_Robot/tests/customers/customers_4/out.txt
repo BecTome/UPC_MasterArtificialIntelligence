@@ -1,0 +1,6 @@
+Nodes generated during search: 369
+Nodes expanded during search: 283
+Metric: 0.029
+Makespan: 0.029
+States evaluated: undefined
+Planner found 1 plan(s) in 0.444secs.
