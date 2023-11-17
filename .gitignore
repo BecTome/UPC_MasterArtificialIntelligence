@@ -1,2 +1,5 @@
 IHLT/Labs/Lab4_Markov/models
 __pycache__
+
+CV/Labs/P07_1_bag_of_words/Caltech_101_subset
+CV/Labs/P07_1_bag_of_words/101_ObjectCategories.tar.gz
