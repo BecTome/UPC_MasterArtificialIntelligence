@@ -3,3 +3,7 @@ __pycache__
 
 CV/Labs/P07_1_bag_of_words/Caltech_101_subset
 CV/Labs/P07_1_bag_of_words/101_ObjectCategories.tar.gz
+CV/Labs/P06_face_detection_and_recognition/images
+CV/Labs/P08_cnn/chest_xray
+CV/Labs/P08_cnn/data_imagenet_sample
+CV/Labs/P08_cnn/lab_08_2_gradcam_model_*
