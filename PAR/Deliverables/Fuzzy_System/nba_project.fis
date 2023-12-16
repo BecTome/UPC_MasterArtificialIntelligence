@@ -1,0 +1,90 @@
+[System]
+Name='nba_project'
+Type='mamdani'
+Version=2.0
+NumInputs=5
+NumOutputs=1
+NumRules=25
+AndMethod='min'
+OrMethod='max'
+ImpMethod='min'
+AggMethod='max'
+DefuzzMethod='centroid'
+
+[Input1]
+Name='MIN'
+Range=[0 48]
+NumMFs=3
+MF1='Low':'trapmf',[0 0 15 17]
+MF2='Medium':'trapmf',[15 17 31 33]
+MF3='High':'trapmf',[31 33 48 48]
+
+[Input2]
+Name='OFFRTG'
+Range=[90 125]
+NumMFs=5
+MF1='Very Low':'trimf',[90 90 99]
+MF2='Low':'trimf',[90 99 108]
+MF3='Medium':'trimf',[99 108 117]
+MF4='High':'trimf',[108 117 125]
+MF5='Very High':'trimf',[117 125 125]
+
+[Input3]
+Name='DEFRTG'
+Range=[90 125]
+NumMFs=5
+MF1='Very Low':'trimf',[90 90 99]
+MF2='Low':'trimf',[90 99 108]
+MF3='Medium':'trimf',[99 108 117]
+MF4='High':'trimf',[108 117 125]
+MF5='Very High':'trimf',[117 125 125]
+
+[Input4]
+Name='PACE'
+Range=[90 125]
+NumMFs=3
+MF1='Low':'trimf',[90 90 100]
+MF2='Medium':'trapmf',[90 100 105 110]
+MF3='High':'trapmf',[105 110 125 125]
+
+[Input5]
+Name='YOE'
+Range=[0 12]
+NumMFs=3
+MF1='Novice':'trapmf',[0 0 4 6]
+MF2='Experienced':'trimf',[4 6 12]
+MF3='Veteran':'trimf',[6 12 12]
+
+[Output1]
+Name='WIN'
+Range=[0 100]
+NumMFs=2
+MF1='Not Win':'trapmf',[0 0 45 55]
+MF2='Win':'trapmf',[45 55 100 100]
+
+[Rules]
+2 5 0 0 2, 2 (0.692) : 1
+2 3 3 2 2, 2 (0.495) : 1
+2 3 1 2 2, 2 (0.617) : 1
+2 3 2 2 2, 2 (0.617) : 1
+2 4 4 2 2, 2 (0.57) : 1
+2 4 2 2 2, 2 (0.75) : 1
+2 3 3 2 3, 2 (0.594) : 1
+2 3 3 1 2, 2 (0.527) : 1
+2 1 5 2 2, 2 (0.62) : 1
+2 2 4 2 2, 1 (0.56) : 1
+3 3 3 1 3, 2 (0.56) : 1
+2 5 0 0 2, 2 (0.6) : 1
+2 3 3 2 2, 1 (0.505) : 1
+2 3 1 2 2, 1 (0.383) : 1
+2 3 2 2 2, 1 (0.383) : 1
+2 4 4 2 2, 1 (0.43) : 1
+2 4 2 2 2, 1 (0.25) : 1
+2 3 3 2 3, 1 (0.406) : 1
+2 3 3 1 2, 1 (0.473) : 1
+2 1 5 2 2, 1 (0.38) : 1
+2 2 4 2 2, 2 (0.44) : 1
+3 3 3 1 3, 1 (0.44) : 1
+2 1 5 0 0, 1 (0.7) : 1
+3 5 0 0 0, 2 (0.7) : 1
+3 4 0 0 0, 2 (0.6) : 1
